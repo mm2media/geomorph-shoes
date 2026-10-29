@@ -27,7 +27,36 @@ header .tag{font-size:11px;letter-spacing:.25em;color:var(--mu);text-transform:u
 #hero .cap p{color:var(--mu);font-size:12px;letter-spacing:.15em;margin:6px 0 12px}#hero .sw{display:flex;gap:10px;justify-content:center;margin-bottom:12px}#hero .sw button{width:26px;height:26px;border-radius:50%;border:1px solid var(--gold);cursor:pointer}
 .close{position:absolute;top:calc(16px + env(safe-area-inset-top));right:5vw;z-index:2}
 @media(max-width:700px){header .tag{display:none}.logo{font-size:17px;letter-spacing:.26em}.logo img{width:26px;height:26px}#nav{display:none}}
+#top{position:fixed;inset:0;z-index:40;background:#000;overflow:hidden;transition:opacity .9s,transform .9s;touch-action:pan-x}
+#top.out{opacity:0;transform:translateY(-6%);pointer-events:none}
+#top .sl{position:absolute;inset:0;opacity:0;transition:opacity 1.6s ease}#top .sl.on{opacity:1}
+#top .sl div{position:absolute;inset:-6%;background:center/cover no-repeat;transform:translate(var(--mx,0),var(--my,0)) scale(1.02);transition:transform 1.2s cubic-bezier(.2,.7,.2,1)}
+#top .sl.on div{animation:kb 9s ease-out forwards}@keyframes kb{from{scale:1}to{scale:1.1}}
+#top .sh{position:absolute;inset:0;background:linear-gradient(#000a,transparent 30%,transparent 55%,#000e);pointer-events:none}
+#top .tx{position:absolute;left:0;right:0;bottom:calc(40px + env(safe-area-inset-bottom));text-align:center;padding:0 6vw}
+#top .k{font-size:11px;letter-spacing:.35em;color:var(--gold)}#top h1{font-family:"Cormorant Garamond",serif;font-weight:500;font-size:clamp(34px,6vw,64px);color:var(--gold2);letter-spacing:.06em;margin:8px 0 6px;transition:opacity .6s}
+#top .ln{color:#bbb;font-weight:300;font-size:14px;margin-bottom:18px;transition:opacity .6s}
+#top .dots{display:flex;gap:10px;justify-content:center;margin-bottom:20px}#top .dots button{width:28px;height:2px;border:0;background:#c9a45c44;cursor:pointer;padding:0;position:relative;overflow:hidden}
+#top .dots button.on::after{content:"";position:absolute;inset:0;background:var(--gold);animation:pg 7s linear forwards}@keyframes pg{from{transform:translateX(-100%)}to{transform:none}}
+#top .ar{position:absolute;top:50%;transform:translateY(-50%);background:#0008;z-index:2}#top .ar.l{left:2vw}#top .ar.r{right:2vw}
+#top .cue{display:block;margin:14px auto 0;font-size:10px;letter-spacing:.3em;color:var(--mu);animation:bob 2s ease-in-out infinite}@keyframes bob{50%{transform:translateY(4px)}}
+@media(max-width:700px){#top .ar{display:none}}
 </style></head><body>
+<section id="top" aria-label="Featured concepts"><div class="sl on"><div></div></div><div class="sl"><div></div></div><div class="sl"><div></div></div><div class="sh"></div>
+<button class="btn ar l" id="tp" aria-label="Previous">‹</button><button class="btn ar r" id="tn" aria-label="Next">›</button>
+<div class="tx"><div class="k" id="tk"></div><h1 id="th"></h1><p class="ln" id="tl"></p><div class="dots" id="td"></div><button class="btn" id="tgo">Explore the Collection</button><span class="cue">SWIPE UP OR SCROLL</span></div></section>
+<script>(()=>{const HV='HVTOKEN',S=[['serpent','Serpent Runner','Scaled lattice coils into a sculpted sneaker'],['liquid-cage-jelly','Liquid Cage','Organic mesh flowing over a gyroid slip-on'],['mountain','Faceted Peak','Low-poly Chelsea boot carved like stone']];
+const T=document.getElementById('top'),sl=T.querySelectorAll('.sl'),d=document.getElementById('td');let i=0,tm;
+S.forEach((x,j)=>{sl[j].firstChild.style.backgroundImage=`url(img/hero/${x[0]}.webp?v=${HV})`;const b=document.createElement('button');b.setAttribute('aria-label',x[1]);b.onclick=()=>go(j);d.appendChild(b)});
+function go(j){i=(j+S.length)%S.length;sl.forEach((e,k)=>e.classList.toggle('on',k==i));d.querySelectorAll('button').forEach((e,k)=>{e.classList.remove('on');if(k==i){void e.offsetWidth;e.classList.add('on')}});
+document.getElementById('tk').textContent=`FEATURED · 0${i+1} / 0${S.length}`;document.getElementById('th').textContent=S[i][1];document.getElementById('tl').textContent=S[i][2];clearTimeout(tm);tm=setTimeout(()=>go(i+1),7000)}
+go(0);document.getElementById('tp').onclick=()=>go(i-1);document.getElementById('tn').onclick=()=>go(i+1);
+const close=()=>{if(T.classList.contains('out'))return;T.classList.add('out');clearTimeout(tm);setTimeout(()=>T.style.display='none',900)};document.getElementById('tgo').onclick=close;
+T.addEventListener('mousemove',e=>{const x=(e.clientX/innerWidth-.5)*-24,y=(e.clientY/innerHeight-.5)*-24;T.style.setProperty('--mx',x+'px');T.style.setProperty('--my',y+'px')});
+T.addEventListener('wheel',e=>{if(e.deltaY>20)close()},{passive:true});
+let sx,sy;T.addEventListener('touchstart',e=>{sx=e.touches[0].clientX;sy=e.touches[0].clientY},{passive:true});
+T.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-sx,dy=e.changedTouches[0].clientY-sy;if(Math.abs(dx)>40&&Math.abs(dx)>Math.abs(dy))go(i+(dx<0?1:-1));else if(dy<-50)close()});
+addEventListener('keydown',e=>{if(T.classList.contains('out'))return;e.stopImmediatePropagation();if(e.key=='ArrowRight')go(i+1);if(e.key=='ArrowLeft')go(i-1);if(e.key=='Enter'||e.key=='ArrowDown')close()});})();</script>
 <div id="intro"><img src="img/logo-g.png" alt="Geomorph"><div class="w">GEOMORPH</div><div class="s">TPU FOOTWEAR CONCEPTS</div><div id="bar"><div></div></div></div>
 <header><a href="#" class="logo"><img src="img/logo-g.png" alt="Geomorph">GEOMORPH</a><span class="tag">Geo → Organic · 3D-printed TPU</span><button class="btn" id="open3d">3D Model</button></header>
 <div id="nav"><button class="btn" id="prev">‹</button><button class="btn" id="next">›</button></div>
