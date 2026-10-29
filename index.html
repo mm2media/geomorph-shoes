@@ -45,7 +45,7 @@ header .tag{font-size:11px;letter-spacing:.25em;color:var(--mu);text-transform:u
 <section id="top" aria-label="Featured concepts"><div class="sl on"><div></div></div><div class="sl"><div></div></div><div class="sl"><div></div></div><div class="sh"></div>
 <button class="btn ar l" id="tp" aria-label="Previous">‹</button><button class="btn ar r" id="tn" aria-label="Next">›</button>
 <div class="tx"><div class="k" id="tk"></div><h1 id="th"></h1><p class="ln" id="tl"></p><div class="dots" id="td"></div><button class="btn" id="tgo">Explore the Collection</button><span class="cue">SWIPE UP OR SCROLL</span></div></section>
-<script>(()=>{const HV='HVTOKEN',S=[['serpent','Serpent Runner','Scaled lattice coils into a sculpted sneaker'],['liquid-cage-jelly','Liquid Cage','Organic mesh flowing over a gyroid slip-on'],['mountain','Faceted Peak','Low-poly Chelsea boot carved like stone']];
+<script>(()=>{const HV='7e1c587',S=[['serpent','Serpent Runner','Scaled lattice coils into a sculpted sneaker'],['liquid-cage-jelly','Liquid Cage','Organic mesh flowing over a gyroid slip-on'],['mountain','Faceted Peak','Low-poly Chelsea boot carved like stone']];
 const T=document.getElementById('top'),sl=T.querySelectorAll('.sl'),d=document.getElementById('td');let i=0,tm;
 S.forEach((x,j)=>{sl[j].firstChild.style.backgroundImage=`url(img/hero/${x[0]}.webp?v=${HV})`;const b=document.createElement('button');b.setAttribute('aria-label',x[1]);b.onclick=()=>go(j);d.appendChild(b)});
 function go(j){i=(j+S.length)%S.length;sl.forEach((e,k)=>e.classList.toggle('on',k==i));d.querySelectorAll('button').forEach((e,k)=>{e.classList.remove('on');if(k==i){void e.offsetWidth;e.classList.add('on')}});
