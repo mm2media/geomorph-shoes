@@ -57,7 +57,7 @@ function go(j){i=(j+S.length)%S.length;sl.forEach((e,k)=>e.classList.toggle('on'
 document.getElementById('tk').textContent=`FEATURED · 0${i+1} / 0${S.length}`;document.getElementById('th').textContent=S[i][1];document.getElementById('tl').textContent=S[i][2];clearTimeout(tm);tm=setTimeout(()=>go(i+1),7000)}
 go(0);document.getElementById('tp').onclick=()=>go(i-1);document.getElementById('tn').onclick=()=>go(i+1);
 let ht;const close=()=>{if(T.classList.contains('out'))return;T.classList.add('out');clearTimeout(tm);clearTimeout(ht);ht=setTimeout(()=>T.style.display='none',900)};
-window.openHero=()=>{clearTimeout(ht);if(window.closeD)closeD();T.style.display='';T.classList.add('out');void T.offsetWidth;T.classList.remove('out');go(0);document.getElementById('tgo').focus({preventScroll:true})};document.getElementById('tgo').onclick=close;
+window.openHero=()=>{clearTimeout(ht);{const D=document.getElementById('detail');if(D&&D.classList.contains('on'))document.getElementById('dclose').click()}T.style.display='';T.classList.add('out');void T.offsetWidth;T.classList.remove('out');go(0);document.getElementById('tgo').focus({preventScroll:true})};document.getElementById('tgo').onclick=close;
 T.addEventListener('mousemove',e=>{const x=(e.clientX/innerWidth-.5)*-24,y=(e.clientY/innerHeight-.5)*-24;T.style.setProperty('--mx',x+'px');T.style.setProperty('--my',y+'px')});
 T.addEventListener('wheel',e=>{if(e.deltaY>20)close()},{passive:true});
 let sx,sy;T.addEventListener('touchstart',e=>{sx=e.touches[0].clientX;sy=e.touches[0].clientY},{passive:true});
