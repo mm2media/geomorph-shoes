@@ -15,9 +15,14 @@ header .tag{font-size:11px;letter-spacing:.25em;color:var(--mu);text-transform:u
 #hud .soles i{display:inline-block;width:10px;height:10px;border-radius:50%;margin:0 4px 0 10px;vertical-align:-1px;border:1px solid #555}
 .btn{background:none;border:1px solid var(--gold);color:var(--gold2);padding:9px 16px;font:500 11px Inter;letter-spacing:.2em;text-transform:uppercase;cursor:pointer;border-radius:2px}
 #nav{position:fixed;top:50%;left:0;right:0;display:flex;justify-content:space-between;padding:0 2vw;z-index:5;pointer-events:none}#nav .btn{pointer-events:auto;padding:12px 15px;background:#0008}
-#detail{position:fixed;inset:0;z-index:20;background:#000e;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:70px 5vw 30px;opacity:0;pointer-events:none;transition:opacity .45s}
-#detail.on{opacity:1;pointer-events:auto}#detail img{max-width:100%;max-height:62vh;border:1px solid #c9a45c55;transform:scale(.94);transition:transform .5s}#detail.on img{transform:none}
-#detail h3{font-family:"Cormorant Garamond",serif;font-size:34px;color:var(--gold2);margin-top:16px;font-weight:500}#detail p{color:#bbb;margin:6px 0 16px;text-align:center;max-width:560px;font-weight:300}
+#detail{position:fixed;inset:0;z-index:20;background:#000;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:64px 4vw 28px;opacity:0;pointer-events:none;transition:opacity .45s;touch-action:none}
+#detail.on{opacity:1;pointer-events:auto}#dwrap{position:relative;overflow:hidden;max-width:100%;max-height:68vh;line-height:0}#detail img{max-width:100%;max-height:68vh;transform-origin:0 0;transition:opacity .35s;user-select:none;-webkit-user-drag:none}
+#lens{position:absolute;width:200px;height:200px;border-radius:50%;border:2px solid var(--gold);box-shadow:0 0 0 1px #000,0 8px 30px #000c;pointer-events:none;display:none;background-repeat:no-repeat}
+#detail h3{font-family:"Cormorant Garamond",serif;font-size:34px;color:var(--gold2);margin-top:18px;font-weight:500;letter-spacing:.04em}#detail p{color:#a89c80;margin:6px 0 0;text-align:center;max-width:560px;font-weight:300;font-size:13px;letter-spacing:.14em;text-transform:uppercase}
+#dclose{position:absolute;top:calc(14px + env(safe-area-inset-top));right:16px;width:42px;height:42px;padding:0;font-size:20px}.dn{position:absolute;top:50%;transform:translateY(-50%);width:44px;height:44px;padding:0;font-size:22px}#dprev{left:12px}#dnext{right:12px}#dcount{position:absolute;top:calc(26px + env(safe-area-inset-top));left:20px;color:#8a8578;font-size:11px;letter-spacing:.2em}
+@media(hover:none){#lens{display:none!important}}@media(max-width:700px){.dn{display:none}}
+
+
 #intro{position:fixed;inset:0;z-index:50;background:#000;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;transition:opacity 1s}
 #intro img{width:150px;animation:p 2.4s ease-in-out infinite}@keyframes p{50%{transform:scale(1.05);filter:drop-shadow(0 0 22px #c9a45c88)}}
 #intro .w{font-family:"Cormorant Garamond",serif;letter-spacing:.45em;font-size:26px;color:var(--gold2)}#intro .s{font-size:11px;letter-spacing:.3em;color:var(--mu)}
@@ -55,10 +60,10 @@ let sx,sy;T.addEventListener('touchstart',e=>{sx=e.touches[0].clientX;sy=e.touch
 T.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-sx,dy=e.changedTouches[0].clientY-sy;if(Math.abs(dx)>40&&Math.abs(dx)>Math.abs(dy))go(i+(dx<0?1:-1));else if(dy<-50)close()});
 addEventListener('keydown',e=>{if(T.classList.contains('out'))return;e.stopImmediatePropagation();if(e.key=='ArrowRight')go(i+1);if(e.key=='ArrowLeft')go(i-1);if(e.key=='Enter'||e.key=='ArrowDown')close()});})();</script>
 <div id="intro"><img src="img/logo-g.png" alt="Geomorph"><div class="w">GEOMORPH</div><div class="s">TPU FOOTWEAR CONCEPTS</div><div id="bar"><div></div></div></div>
-<header><a href="#" class="logo"><img src="img/logo-g.png" alt="Geomorph">GEOMORPH</a><span class="tag">Geo → Organic · 3D-printed TPU</span></header>
+<header><a href="#" class="logo"><img src="img/logo-g.png" alt="Geomorph">GEOMORPH</a><span class="tag">Geo → Organic · 3D-printed TPU</span><button class="btn" id="vdet">View detail</button></header>
 <div id="nav"><button class="btn" id="prev">‹</button><button class="btn" id="next">›</button></div>
 <div id="hud"><div class="n" id="n"></div><h2 id="t"></h2><p id="d"></p><div class="soles" id="s"></div></div>
-<div id="detail"><button class="btn close" id="dclose">Close</button><img id="dimg" alt=""><h3 id="dt"></h3><p id="dd"></p><div class="soles" id="ds" style="font-size:11px;letter-spacing:.18em;color:#8a8578;text-transform:uppercase"></div></div>
+<div id="detail" role="dialog" aria-modal="true"><span id="dcount"></span><button class="btn" id="dclose" aria-label="Close">✕</button><button class="btn dn" id="dprev" aria-label="Previous shoe">‹</button><button class="btn dn" id="dnext" aria-label="Next shoe">›</button><div id="dwrap"><img id="dimg" alt="" draggable="false"><div id="lens"></div></div><h3 id="dt"></h3><p id="dd"></p></div>
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js"}}</script>
 <script type="module">
 import * as THREE from 'three';
@@ -84,6 +89,7 @@ const S=[
 ['topo-trail','Topo Trail','Trail runner with faceted lugs and contour-ridge upper.',['gum']],
 ['liquid-cage','Liquid Cage','Square lattice melting into organic white strands at the heel.',['white']],
 ['scale-shift','Scale Shift','Sharp geometric scales softening into snakeskin.',['gold']]];
+const CAP={"hex-slipon": "Where it began — honeycomb grounded, wave-lattice rising.", "voronoi": "Cells grown, not cut — on a faceted gold truss.", "gyroid-slide": "Minimal surface, maximum flow.", "rib-high": "Organic ribs, structured hold.", "ripple-mule": "Contour lines in motion.", "spine-runner": "An exoskeleton built for the street.", "crystal-cage": "Crystal at the toe, open air behind.", "wave-slide": "A single wave, sculpted to the foot.", "facet-melt": "Cut stone surrendering to liquid.", "hex-bloom": "Geometry in bloom.", "fault-line-boot": "Tectonic plates, softened by time.", "coral-truss": "Engineered below, grown above.", "shatter-flow": "Fracture becomes flow.", "hive-root": "From hive to root system.", "strata-wave": "Sediment set in motion.", "bone-truss": "Lightweight like bone, strong like a bridge.", "gyroid-high": "Diamond grid, lifted high.", "topo-trail": "The map becomes the terrain.", "liquid-cage": "Order melting into instinct.", "scale-shift": "The moment geometry turns serpent."};
 const N=S.length,$=id=>document.getElementById(id);
 const R=new THREE.WebGLRenderer({antialias:true});R.setPixelRatio(Math.min(devicePixelRatio,2));R.setSize(innerWidth,innerHeight);R.outputColorSpace=THREE.SRGBColorSpace;document.body.prepend(R.domElement);
 const scene=new THREE.Scene();scene.fog=new THREE.FogExp2(0x000000,.045);
@@ -110,12 +116,26 @@ el.addEventListener('pointerdown',e=>{down={x:e.clientX,t:target};moved=0});
 addEventListener('pointermove',e=>{if(!down)return;const dx=e.clientX-down.x;moved=Math.max(moved,Math.abs(dx));target=clamp(down.t-dx/(innerWidth*.28))});
 addEventListener('pointerup',e=>{if(!down)return;down=null;target=Math.round(target);if(moved<6)pick(e)});
 el.addEventListener('wheel',e=>{e.preventDefault();target=clamp(target+(e.deltaY+e.deltaX)*.004);clearTimeout(el._w);el._w=setTimeout(()=>target=Math.round(target),160)},{passive:false});
-addEventListener('keydown',e=>{if(e.key=='ArrowRight')target=clamp(Math.round(target)+1);if(e.key=='ArrowLeft')target=clamp(Math.round(target)-1);if(e.key=='Enter')openD(Math.round(pos));if(e.key=='Escape'){$('detail').classList.remove('on')}});
+addEventListener('keydown',e=>{if($('detail').classList.contains('on')){if(e.key=='Escape')closeD();if(e.key=='ArrowRight')openD(DI+1);if(e.key=='ArrowLeft')openD(DI-1);return}if(e.key=='ArrowRight')target=clamp(Math.round(target)+1);if(e.key=='ArrowLeft')target=clamp(Math.round(target)-1);if(e.key=='Enter')openD(Math.round(pos));if(e.key=='Escape'){$('detail').classList.remove('on')}});
 $('prev').onclick=()=>target=clamp(Math.round(target)-1);$('next').onclick=()=>target=clamp(Math.round(target)+1);
 const ray=new THREE.Raycaster(),v2=new THREE.Vector2();
 function pick(e){v2.set(e.clientX/innerWidth*2-1,-e.clientY/innerHeight*2+1);ray.setFromCamera(v2,cam);const h=ray.intersectObjects(panels,false)[0];if(!h)return;const i=h.object.userData.i;if(i==Math.round(pos))openD(i);else target=i}
-function openD(i){const s=S[i];$('dimg').src='img/'+s[0]+'.webp?v='+VER;$('dt').textContent=s[1];$('dimg').alt=s[1]+' concept render';$('dd').textContent=s[2];$('ds').innerHTML='Soles'+s[3].map(c=>`<i style="display:inline-block;width:10px;height:10px;border-radius:50%;margin:0 4px 0 10px;background:${C[c]}"></i>${c}`).join('');$('detail').classList.add('on')}
-$('dclose').onclick=()=>$('detail').classList.remove('on');
+let DI=0,zs=1,zx=0,zy=0;const dimg=$('dimg'),lens=$('lens'),dw=$('dwrap');
+function zap(){dimg.style.transform=`translate(${zx}px,${zy}px) scale(${zs})`}
+function zreset(){zs=1;zx=0;zy=0;dimg.style.transition='transform .3s,opacity .35s';zap()}
+function zclamp(){const w=dw.clientWidth,h=dw.clientHeight;zx=Math.min(0,Math.max(w-w*zs,zx));zy=Math.min(0,Math.max(h-h*zs,zy))}
+function openD(i){DI=(i+N)%N;const s=S[DI];dimg.style.opacity=0;zreset();setTimeout(()=>{dimg.src='img/'+s[0]+'.webp?v='+VER;dimg.alt=s[1]+' concept render';$('dt').textContent=s[1];$('dd').textContent=CAP[s[0]]||'';$('dcount').textContent=String(DI+1).padStart(2,'0')+' / '+N;lens.style.backgroundImage=`url(${dimg.src})`},$('detail').classList.contains('on')?180:0);$('detail').classList.add('on');target=DI}
+dimg.onload=()=>dimg.style.opacity=1;
+function closeD(){$('detail').classList.remove('on');lens.style.display='none'}
+$('dclose').onclick=closeD;$('dprev').onclick=()=>openD(DI-1);$('dnext').onclick=()=>openD(DI+1);$('vdet').onclick=()=>openD(Math.round(target));
+['pointerdown','pointerup','pointermove','wheel','touchstart','touchmove','touchend'].forEach(t=>$('detail').addEventListener(t,e=>e.stopPropagation(),{passive:true}));
+dw.addEventListener('mousemove',e=>{const r=dimg.getBoundingClientRect(),x=e.clientX-r.left,y=e.clientY-r.top,Z=2.5;if(x<0||y<0||x>r.width||y>r.height){lens.style.display='none';return}lens.style.display='block';lens.style.left=(x-100)+'px';lens.style.top=(y-100)+'px';lens.style.backgroundSize=`${r.width*Z}px ${r.height*Z}px`;lens.style.backgroundPosition=`${-(x*Z-100)}px ${-(y*Z-100)}px`});
+dw.addEventListener('mouseleave',()=>lens.style.display='none');
+let tp=null,pd=0,ps=1,lt=0,sx0,sy0,sw=false;
+$('detail').addEventListener('touchstart',e=>{dimg.style.transition='opacity .35s';const t=e.touches;if(t.length==2){pd=Math.hypot(t[0].clientX-t[1].clientX,t[0].clientY-t[1].clientY);ps=zs;tp=null}else{tp={x:t[0].clientX,y:t[0].clientY,zx,zy};sx0=t[0].clientX;sy0=t[0].clientY;sw=true;
+ const n=Date.now();if(n-lt<300&&e.target==dimg){const r=dw.getBoundingClientRect();if(zs>1)zreset();else{const px=t[0].clientX-r.left,py=t[0].clientY-r.top;zs=2.5;zx=px-px*2.5;zy=py-py*2.5;zclamp();dimg.style.transition='transform .3s,opacity .35s';zap()}sw=false}lt=n}},{passive:true});
+$('detail').addEventListener('touchmove',e=>{e.preventDefault();const t=e.touches;if(t.length==2&&pd){const r=dw.getBoundingClientRect(),cx=(t[0].clientX+t[1].clientX)/2-r.left,cy=(t[0].clientY+t[1].clientY)/2-r.top,ns=Math.min(5,Math.max(1,ps*Math.hypot(t[0].clientX-t[1].clientX,t[0].clientY-t[1].clientY)/pd));zx=cx-(cx-zx)*ns/zs;zy=cy-(cy-zy)*ns/zs;zs=ns;zclamp();zap();sw=false}else if(tp&&zs>1){zx=tp.zx+t[0].clientX-tp.x;zy=tp.zy+t[0].clientY-tp.y;zclamp();zap();sw=false}},{passive:false});
+$('detail').addEventListener('touchend',e=>{if(e.touches.length)return;pd=0;if(zs<=1.02)zreset();if(!sw||zs>1)return;sw=false;const c=e.changedTouches[0],dx=c.clientX-sx0,dy=c.clientY-sy0;if(dy>80&&dy>Math.abs(dx))closeD();else if(Math.abs(dx)>50&&Math.abs(dx)>Math.abs(dy))openD(DI+(dx<0?1:-1))});
 addEventListener('resize',()=>{cam.aspect=innerWidth/innerHeight;cam.updateProjectionMatrix();R.setSize(innerWidth,innerHeight)});
 function loop(){requestAnimationFrame(loop);
  pos+=(target-pos)*.09;const i=Math.round(pos);if(i!=cur){cur=i;hud(i)}
