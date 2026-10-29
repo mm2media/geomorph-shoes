@@ -10,7 +10,7 @@ canvas{display:block;touch-action:none}
 header{position:fixed;top:0;left:0;right:0;display:flex;justify-content:space-between;align-items:center;padding:calc(14px + env(safe-area-inset-top)) 5vw 14px;z-index:5;background:linear-gradient(#000c,transparent);pointer-events:none}header>*{pointer-events:auto}
 header .tag{font-size:11px;letter-spacing:.25em;color:var(--mu);text-transform:uppercase}
 #hud{position:fixed;left:0;right:0;bottom:calc(18px + env(safe-area-inset-bottom));text-align:center;z-index:5;pointer-events:none;padding:0 6vw}
-#hud .n{font-size:11px;letter-spacing:.3em;color:var(--gold)}#hud h2{font-family:"Cormorant Garamond",serif;font-weight:500;font-size:clamp(26px,5vw,44px);color:var(--gold2);margin:4px 0}
+#hud .n{font-size:11px;letter-spacing:.3em;color:var(--gold)}#hud h2{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);font-family:"Cormorant Garamond",serif;font-weight:500;font-size:clamp(26px,5vw,44px);color:var(--gold2);margin:4px 0}
 #hud p{color:#bbb;font-size:14px;font-weight:300}#hud .soles{margin-top:8px;font-size:11px;letter-spacing:.18em;color:var(--mu);text-transform:uppercase}
 #hud .soles i{display:inline-block;width:10px;height:10px;border-radius:50%;margin:0 4px 0 10px;vertical-align:-1px;border:1px solid #555}
 .btn{background:none;border:1px solid var(--gold);color:var(--gold2);padding:9px 16px;font:500 11px Inter;letter-spacing:.2em;text-transform:uppercase;cursor:pointer;border-radius:2px}
@@ -71,7 +71,8 @@ const mgr=new THREE.LoadingManager();mgr.onProgress=(u,l,t)=>{const b=$('bar');i
 let gone=0;mgr.onLoad=()=>{if(gone++)return;$('intro').style.opacity=0;setTimeout(()=>$('intro').remove(),1000)};
 setTimeout(()=>mgr.onLoad(),9000);
 const tl=new THREE.TextureLoader(mgr),RAD=9,STEP=0.42,group=new THREE.Group();scene.add(group);
-const panels=S.map((s,i)=>{const tex=tl.load('img/'+s[0]+'.webp',t=>{const a=t.image.width/t.image.height;m.scale.set(a>1?3.2:3.2*a,a>1?3.2/a:3.2,1)});tex.colorSpace=THREE.SRGBColorSpace;tex.anisotropy=4;
+const VER='__VER__';
+const panels=S.map((s,i)=>{const tex=tl.load('img/'+s[0]+'.webp?v='+VER,t=>{const a=t.image.width/t.image.height;m.scale.set(a>1?3.2:3.2*a,a>1?3.2/a:3.2,1)});tex.colorSpace=THREE.SRGBColorSpace;tex.anisotropy=4;
  const m=new THREE.Mesh(new THREE.PlaneGeometry(1,1),new THREE.MeshBasicMaterial({map:tex,transparent:true}));m.scale.set(3.2,3.2,1);
  const fr=new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.PlaneGeometry(1.04,1.04)),new THREE.LineBasicMaterial({color:0xc9a45c,transparent:true,opacity:.5}));m.add(fr);
  m.userData.i=i;group.add(m);return m});
@@ -92,7 +93,7 @@ addEventListener('keydown',e=>{if(e.key=='ArrowRight')target=clamp(Math.round(ta
 $('prev').onclick=()=>target=clamp(Math.round(target)-1);$('next').onclick=()=>target=clamp(Math.round(target)+1);
 const ray=new THREE.Raycaster(),v2=new THREE.Vector2();
 function pick(e){v2.set(e.clientX/innerWidth*2-1,-e.clientY/innerHeight*2+1);ray.setFromCamera(v2,cam);const h=ray.intersectObjects(panels,false)[0];if(!h)return;const i=h.object.userData.i;if(i==Math.round(pos))openD(i);else target=i}
-function openD(i){const s=S[i];$('dimg').src='img/'+s[0]+'.webp';$('dt').textContent=s[1];$('dd').textContent=s[2];$('ds').innerHTML='Soles'+s[3].map(c=>`<i style="display:inline-block;width:10px;height:10px;border-radius:50%;margin:0 4px 0 10px;background:${C[c]}"></i>${c}`).join('');$('detail').classList.add('on')}
+function openD(i){const s=S[i];$('dimg').src='img/'+s[0]+'.webp?v='+VER;$('dt').textContent=s[1];$('dimg').alt=s[1]+' concept render';$('dd').textContent=s[2];$('ds').innerHTML='Soles'+s[3].map(c=>`<i style="display:inline-block;width:10px;height:10px;border-radius:50%;margin:0 4px 0 10px;background:${C[c]}"></i>${c}`).join('');$('detail').classList.add('on')}
 $('dclose').onclick=()=>$('detail').classList.remove('on');
 // 3D hero
 let H=null,heroObj=null,heroURL=null;
