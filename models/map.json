@@ -1,8 +1,5 @@
 {
- "hex-slipon-white": "models/hex_slipon.glb",
- "hex-slipon-twotone": "models/hex_slipon.glb",
- "hex-colorways-white": "models/hex_slipon.glb",
- "hex-colorways-black": "models/hex_slipon.glb",
+ "hex-slipon": "models/hex_slipon.glb",
  "voronoi": "models/voronoi.glb",
  "gyroid-slide": "models/gyroid-slide.glb",
  "rib-high": "models/rib-high.glb",

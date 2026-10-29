@@ -43,10 +43,7 @@ import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
 let MODELS={};fetch('models/map.json',{cache:'no-cache'}).then(r=>r.ok?r.json():{}).then(m=>{MODELS=m;upd3d()}).catch(()=>{});
 const C={black:'#111',white:'#eee',gum:'#b5834f',gold:'#c9a45c'};
 const S=[
-['hex-slipon-white','Hex Slip-On','The concept that started it: a white wave-lattice upper rising from a honeycomb sole.',['white']],
-['hex-slipon-twotone','Hex Slip-On · Two-Tone','White wave lattice over a black honeycomb sole, split cleanly at the sole line.',['black']],
-['hex-colorways-white','Hex Slip-On · Colorways','One model, three soles: only the sole filament changes.',['black','gum','gold']],
-['hex-colorways-black','Hex Slip-On · Inverted','Flipped to a black upper on contrast soles.',['white','gum','gold']],
+['hex-slipon','Hex Slip-On','The concept that started it: a wave-lattice upper rising from a honeycomb sole. Comes in white or black uppers on black, gum, gold or white soles.',['black','gum','gold','white']],
 ['voronoi','Voronoi','Cell-pattern upper on a faceted gold truss sole.',['gold']],
 ['gyroid-slide','Gyroid Slide','Lattice footbed with a hex-mesh strap.',['gum']],
 ['rib-high','Rib High','High-top with organic ribs wrapping a hex lattice.',['white']],
