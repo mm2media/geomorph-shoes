@@ -43,6 +43,8 @@ header .tag{font-size:11px;letter-spacing:.25em;color:var(--mu);text-transform:u
 #top .ar{position:absolute;top:50%;transform:translateY(-50%);background:#0008;z-index:2}#top .ar.l{left:2vw}#top .ar.r{right:2vw}
 #top .cue{display:block;margin:14px auto 0;font-size:10px;letter-spacing:.3em;color:var(--mu);animation:bob 2s ease-in-out infinite}@keyframes bob{50%{transform:translateY(4px)}}
 @media(max-width:700px){#top .ar{display:none}}
+#spec{margin-top:14px;border:1px solid rgba(201,162,74,.35);background:rgba(10,8,4,.85);max-width:640px;width:100%;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:#a89c80;line-height:1.5}#spec summary{cursor:pointer;list-style:none;padding:8px 14px;color:var(--gold2);display:flex;justify-content:space-between}#spec summary::-webkit-details-marker{display:none}#spec summary:after{content:"+"}#spec[open] summary:after{content:"−"}#spec dl{display:grid;grid-template-columns:auto 1fr;gap:5px 16px;margin:0;padding:2px 14px 12px}#spec dt{color:var(--gold2)}#spec dd{margin:0;letter-spacing:.12em}.sw{display:inline-flex;align-items:center;gap:5px;margin:0 12px 4px 0}.sw i{display:inline-block;width:9px;height:14px;border:1px solid rgba(201,162,74,.5)}.sw i+i{margin-left:-5px;width:9px}
+@media(max-width:700px){#dwrap,#detail img{max-height:54vh}#detail{padding-top:56px}#spec{font-size:9px}#spec dl{gap:4px 10px}}
 </style></head><body>
 <section id="top" aria-label="Featured concepts"><div class="sl on"><div></div></div><div class="sl"><div></div></div><div class="sl"><div></div></div><div class="sh"></div>
 <button class="btn ar l" id="tp" aria-label="Previous">‹</button><button class="btn ar r" id="tn" aria-label="Next">›</button>
@@ -63,7 +65,7 @@ addEventListener('keydown',e=>{if(T.classList.contains('out'))return;e.stopImmed
 <header><a href="#" class="logo"><img src="img/logo-g.png" alt="Geomorph">GEOMORPH</a><span class="tag">Geo → Organic · 3D-printed TPU</span><button class="btn" id="vdet">View detail</button></header>
 <div id="nav"><button class="btn" id="prev">‹</button><button class="btn" id="next">›</button></div>
 <div id="hud"><div class="n" id="n"></div><h2 id="t"></h2><p id="d"></p><div class="soles" id="s"></div></div>
-<div id="detail" role="dialog" aria-modal="true"><span id="dcount"></span><button class="btn" id="dclose" aria-label="Close">✕</button><button class="btn dn" id="dprev" aria-label="Previous shoe">‹</button><button class="btn dn" id="dnext" aria-label="Next shoe">›</button><div id="dwrap"><img id="dimg" alt="" draggable="false"><div id="lens"></div></div><h3 id="dt"></h3><p id="dd"></p></div>
+<div id="detail" role="dialog" aria-modal="true"><span id="dcount"></span><button class="btn" id="dclose" aria-label="Close">✕</button><button class="btn dn" id="dprev" aria-label="Previous shoe">‹</button><button class="btn dn" id="dnext" aria-label="Next shoe">›</button><div id="dwrap"><img id="dimg" alt="" draggable="false"><div id="lens"></div></div><h3 id="dt"></h3><p id="dd"></p><details id="spec"><summary>Specifications</summary><dl id="sdl"></dl></details></div>
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js"}}</script>
 <script type="module">
 import * as THREE from 'three';
@@ -124,7 +126,12 @@ let DI=0,zs=1,zx=0,zy=0;const dimg=$('dimg'),lens=$('lens'),dw=$('dwrap');
 function zap(){dimg.style.transform=`translate(${zx}px,${zy}px) scale(${zs})`}
 function zreset(){zs=1;zx=0;zy=0;dimg.style.transition='transform .3s,opacity .35s';zap()}
 function zclamp(){const w=dw.clientWidth,h=dw.clientHeight;zx=Math.min(0,Math.max(w-w*zs,zx));zy=Math.min(0,Math.max(h-h*zs,zy))}
-function openD(i){DI=(i+N)%N;const s=S[DI];dimg.style.opacity=0;zreset();setTimeout(()=>{dimg.src='img/'+s[0]+'.webp?v='+VER;dimg.alt=s[1]+' concept render';$('dt').textContent=s[1];$('dd').textContent=CAP[s[0]]||'';$('dcount').textContent=String(DI+1).padStart(2,'0')+' / '+N;lens.style.backgroundImage=`url(${dimg.src})`},$('detail').classList.contains('on')?180:0);$('detail').classList.add('on');target=DI}
+
+const SC={black:'#111',gum:'#b5793d',gold:'#c9a24a',white:'#f2efe8'};
+function specHTML(k){const r=(a,b)=>`<dt>${a}</dt><dd>${b}</dd>`;let h=k=='hex-slipon'?r('Status','Print file ready'):r('Status','Concept, print file in development');
+h+=r('Material','TPU 95A · 1.75 mm filament (e.g. Bambu TPU 95A HF)')+r('Printer','Bambu Lab X2D · dual nozzle, two-color')+r('Size',"US men's 12")+r('Print','Flat on the diagonal · one piece · no supports');
+if(k=='hex-slipon'){h+=r('Dimensions','318 × 118 × 73 mm');const cw=[['white','black'],['white','gum'],['white','gold'],['black','white'],['black','gum'],['black','gold']];h+=r('Colorways',cw.map(([u,o])=>`<span class="sw"><i style="background:${SC[u]}"></i><i style="background:${SC[o]}"></i>${u} / ${o} sole</span>`).join(''))}return h}
+function openD(i){DI=(i+N)%N;const s=S[DI];dimg.style.opacity=0;zreset();setTimeout(()=>{dimg.src='img/'+s[0]+'.webp?v='+VER;dimg.alt=s[1]+' concept render';$('dt').textContent=s[1];$('dd').textContent=CAP[s[0]]||'';$('sdl').innerHTML=specHTML(s[0]);$('dcount').textContent=String(DI+1).padStart(2,'0')+' / '+N;lens.style.backgroundImage=`url(${dimg.src})`},$('detail').classList.contains('on')?180:0);if(!$('detail').classList.contains('on'))$('spec').open=innerWidth>700;$('detail').classList.add('on');target=DI}
 dimg.onload=()=>dimg.style.opacity=1;
 function closeD(){$('detail').classList.remove('on');lens.style.display='none'}
 $('dclose').onclick=closeD;$('dprev').onclick=()=>openD(DI-1);$('dnext').onclick=()=>openD(DI+1);$('vdet').onclick=()=>openD(Math.round(target));
