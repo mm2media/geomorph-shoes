@@ -107,7 +107,7 @@ function setupHero(){const r=new THREE.WebGLRenderer({antialias:true,alpha:true}
 function loadModel(url,name){if(url==heroURL)return;heroURL=url;if(heroObj){H.sc.remove(heroObj);heroObj=null}H.mats={};$('hero').querySelector('h3').textContent=name;$('hero').querySelector('p').textContent='LOADING…';$('sw').innerHTML='';
  const{sc,c,oc}=H;
  new GLTFLoader().load(url,g=>{if(url!=heroURL)return;$('hero').querySelector('p').textContent='DRAG TO SPIN · PINCH TO ZOOM';const o=g.scene;heroObj=o;const b=new THREE.Box3().setFromObject(o),sz=b.getSize(new THREE.Vector3()).length(),ce=b.getCenter(new THREE.Vector3());o.position.sub(ce);sc.add(o);
-  const k=innerWidth<innerHeight?2.6:1;c.position.set(sz*.6*k,sz*.35*k,sz*.75*k);oc.minDistance=sz*.35;oc.maxDistance=sz*3;oc.update();
+  const k=innerWidth<innerHeight?2.6:1.6;c.position.set(sz*.6*k,sz*.35*k,sz*.75*k);oc.minDistance=sz*.35;oc.maxDistance=sz*3;oc.update();
   o.traverse(m=>{if(m.isMesh){H.mats[m.material.name]=m.material;m.material.roughness=.55}});
   if(!H.mats.upper_mat||!H.mats.sole_mat)return;
   const combos=[['white','black'],['white','gum'],['white','gold'],['black','white'],['black','gum'],['black','gold']];
