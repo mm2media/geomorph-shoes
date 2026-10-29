@@ -1,0 +1,121 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Geomorph — TPU Shoe Concepts</title><link rel="icon" href="img/logo-g.png">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{--gold:#c9a45c;--gold2:#e6c98a;--mu:#8a8578}
+*{box-sizing:border-box;margin:0}html,body{height:100%;background:#000;color:#eee;font-family:Inter,sans-serif;overflow:hidden;overscroll-behavior:none;-webkit-user-select:none;user-select:none}
+canvas{display:block;touch-action:none}
+.logo{display:flex;align-items:center;gap:10px;font-family:"Cormorant Garamond",serif;font-size:22px;letter-spacing:.32em;color:var(--gold2);text-decoration:none}.logo img{width:30px;height:30px;object-fit:contain}
+header{position:fixed;top:0;left:0;right:0;display:flex;justify-content:space-between;align-items:center;padding:calc(14px + env(safe-area-inset-top)) 5vw 14px;z-index:5;background:linear-gradient(#000c,transparent);pointer-events:none}header>*{pointer-events:auto}
+header .tag{font-size:11px;letter-spacing:.25em;color:var(--mu);text-transform:uppercase}
+#hud{position:fixed;left:0;right:0;bottom:calc(18px + env(safe-area-inset-bottom));text-align:center;z-index:5;pointer-events:none;padding:0 6vw}
+#hud .n{font-size:11px;letter-spacing:.3em;color:var(--gold)}#hud h2{font-family:"Cormorant Garamond",serif;font-weight:500;font-size:clamp(26px,5vw,44px);color:var(--gold2);margin:4px 0}
+#hud p{color:#bbb;font-size:14px;font-weight:300}#hud .soles{margin-top:8px;font-size:11px;letter-spacing:.18em;color:var(--mu);text-transform:uppercase}
+#hud .soles i{display:inline-block;width:10px;height:10px;border-radius:50%;margin:0 4px 0 10px;vertical-align:-1px;border:1px solid #555}
+.btn{background:none;border:1px solid var(--gold);color:var(--gold2);padding:9px 16px;font:500 11px Inter;letter-spacing:.2em;text-transform:uppercase;cursor:pointer;border-radius:2px}
+#nav{position:fixed;top:50%;left:0;right:0;display:flex;justify-content:space-between;padding:0 2vw;z-index:5;pointer-events:none}#nav .btn{pointer-events:auto;padding:12px 15px;background:#0008}
+#detail{position:fixed;inset:0;z-index:20;background:#000e;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:70px 5vw 30px;opacity:0;pointer-events:none;transition:opacity .45s}
+#detail.on{opacity:1;pointer-events:auto}#detail img{max-width:100%;max-height:62vh;border:1px solid #c9a45c55;transform:scale(.94);transition:transform .5s}#detail.on img{transform:none}
+#detail h3{font-family:"Cormorant Garamond",serif;font-size:34px;color:var(--gold2);margin-top:16px;font-weight:500}#detail p{color:#bbb;margin:6px 0 16px;text-align:center;max-width:560px;font-weight:300}
+#intro{position:fixed;inset:0;z-index:50;background:#000;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;transition:opacity 1s}
+#intro img{width:150px;animation:p 2.4s ease-in-out infinite}@keyframes p{50%{transform:scale(1.05);filter:drop-shadow(0 0 22px #c9a45c88)}}
+#intro .w{font-family:"Cormorant Garamond",serif;letter-spacing:.45em;font-size:26px;color:var(--gold2)}#intro .s{font-size:11px;letter-spacing:.3em;color:var(--mu)}
+#bar{width:160px;height:1px;background:#222}#bar div{height:100%;width:0;background:var(--gold);transition:width .3s}
+#hero{position:fixed;inset:0;z-index:30;background:radial-gradient(#1a1508,#000 70%);opacity:0;pointer-events:none;transition:opacity .5s}#hero.on{opacity:1;pointer-events:auto}
+#hero .cap{position:absolute;bottom:calc(24px + env(safe-area-inset-bottom));left:0;right:0;text-align:center}#hero .cap h3{font-family:"Cormorant Garamond",serif;color:var(--gold2);font-size:30px;font-weight:500}
+#hero .cap p{color:var(--mu);font-size:12px;letter-spacing:.15em;margin:6px 0 12px}#hero .sw{display:flex;gap:10px;justify-content:center;margin-bottom:12px}#hero .sw button{width:26px;height:26px;border-radius:50%;border:1px solid var(--gold);cursor:pointer}
+.close{position:absolute;top:calc(16px + env(safe-area-inset-top));right:5vw;z-index:2}
+@media(max-width:700px){header .tag{display:none}.logo{font-size:17px;letter-spacing:.26em}.logo img{width:26px;height:26px}#nav{display:none}}
+</style></head><body>
+<div id="intro"><img src="img/logo-g.png" alt="Geomorph"><div class="w">GEOMORPH</div><div class="s">TPU FOOTWEAR CONCEPTS</div><div id="bar"><div></div></div></div>
+<header><a href="#" class="logo"><img src="img/logo-g.png" alt="Geomorph">GEOMORPH</a><span class="tag">Geo → Organic · 3D-printed TPU</span><button class="btn" id="open3d">3D Model</button></header>
+<div id="nav"><button class="btn" id="prev">‹</button><button class="btn" id="next">›</button></div>
+<div id="hud"><div class="n" id="n"></div><h2 id="t"></h2><p id="d"></p><div class="soles" id="s"></div></div>
+<div id="detail"><button class="btn close" id="dclose">Close</button><img id="dimg" alt=""><h3 id="dt"></h3><p id="dd"></p><div class="soles" id="ds" style="font-size:11px;letter-spacing:.18em;color:#8a8578;text-transform:uppercase"></div></div>
+<div id="hero"><button class="btn close" id="hclose">Close</button><div class="cap"><h3>Hex Slip-On · US 12</h3><p>DRAG TO SPIN · PINCH TO ZOOM</p><div class="sw" id="sw"></div></div></div>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"}}</script>
+<script type="module">
+import * as THREE from 'three';
+import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
+import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
+// Set to null to hide the 3D hero, or point at another GLB.
+const HERO_GLB='models/hex_slipon.glb';
+const C={black:'#111',white:'#eee',gum:'#b5834f',gold:'#c9a45c'};
+const S=[
+['hex-slipon-white','Hex Slip-On','The concept that started it: a white wave-lattice upper rising from a honeycomb sole.',['white']],
+['hex-slipon-twotone','Hex Slip-On · Two-Tone','White wave lattice over a black honeycomb sole, split cleanly at the sole line.',['black']],
+['hex-colorways-white','Hex Slip-On · Colorways','One model, three soles: only the sole filament changes.',['black','gum','gold']],
+['hex-colorways-black','Hex Slip-On · Inverted','Flipped to a black upper on contrast soles.',['white','gum','gold']],
+['voronoi','Voronoi','Cell-pattern upper on a faceted gold truss sole.',['gold']],
+['gyroid-slide','Gyroid Slide','Lattice footbed with a hex-mesh strap.',['gum']],
+['rib-high','Rib High','High-top with organic ribs wrapping a hex lattice.',['white']],
+['ripple-mule','Ripple Mule','Backless mule of contour-line ridges flowing over the foot.',['gold']],
+['spine-runner','Spine Runner','Vertebra-style ribs wrap from the sole over the instep.',['white']],
+['crystal-cage','Crystal Cage','Faceted low-poly toe shell dissolving into an open lattice.',['gum']],
+['wave-slide','Wave Slide','A sculpted strap of twisting wave ribs over a honeycomb footbed.',['gum']],
+['facet-melt','Facet Melt','Faceted crystal at the toe melts into liquid drips at the heel.',['gold']],
+['hex-bloom','Hex Bloom','Tight hex cells at the toe open into petal shapes at the ankle.',['white']],
+['fault-line-boot','Fault Line Boot','Chelsea boot whose cracked plates soften into ribs at the collar.',['gum']],
+['coral-truss','Coral Truss','Triangle truss sole branching into a coral lattice upper.',['gold']],
+['shatter-flow','Shatter Flow','Cracked faceted toe cap loosening into flowing ribbons.',['gold']],
+['hive-root','Hive Root','Honeycomb toe stretching into branching root lines.',['gold']],
+['strata-wave','Strata Wave','Stacked flat layers at the toe ripple into waves at the heel.',['white']],
+['bone-truss','Bone Truss','Straight truss sole turning into a bone-like heel lattice.',['gold']],
+['gyroid-high','Gyroid High','Diamond-grid high-top on a gold sole.',['gold']],
+['topo-trail','Topo Trail','Trail runner with faceted lugs and contour-ridge upper.',['gum']],
+['liquid-cage','Liquid Cage','Square lattice melting into organic white strands at the heel.',['white']],
+['scale-shift','Scale Shift','Sharp geometric scales softening into snakeskin.',['gold']]];
+const N=S.length,$=id=>document.getElementById(id);
+const R=new THREE.WebGLRenderer({antialias:true});R.setPixelRatio(Math.min(devicePixelRatio,2));R.setSize(innerWidth,innerHeight);R.outputColorSpace=THREE.SRGBColorSpace;document.body.prepend(R.domElement);
+const scene=new THREE.Scene();scene.fog=new THREE.FogExp2(0x000000,.045);
+const cam=new THREE.PerspectiveCamera(50,innerWidth/innerHeight,.1,100);
+const mgr=new THREE.LoadingManager();mgr.onProgress=(u,l,t)=>{const b=$('bar');if(b)b.firstChild.style.width=(l/t*100)+'%'};
+let gone=0;mgr.onLoad=()=>{if(gone++)return;$('intro').style.opacity=0;setTimeout(()=>$('intro').remove(),1000)};
+setTimeout(()=>mgr.onLoad(),9000);
+const tl=new THREE.TextureLoader(mgr),RAD=9,STEP=0.42,group=new THREE.Group();scene.add(group);
+const panels=S.map((s,i)=>{const tex=tl.load('img/'+s[0]+'.webp',t=>{const a=t.image.width/t.image.height;m.scale.set(a>1?3.2:3.2*a,a>1?3.2/a:3.2,1)});tex.colorSpace=THREE.SRGBColorSpace;tex.anisotropy=4;
+ const m=new THREE.Mesh(new THREE.PlaneGeometry(1,1),new THREE.MeshBasicMaterial({map:tex,transparent:true}));m.scale.set(3.2,3.2,1);
+ const fr=new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.PlaneGeometry(1.04,1.04)),new THREE.LineBasicMaterial({color:0xc9a45c,transparent:true,opacity:.5}));m.add(fr);
+ m.userData.i=i;group.add(m);return m});
+// gold particles
+const pg=new THREE.BufferGeometry(),P=900,pa=new Float32Array(P*3);for(let i=0;i<P*3;i+=3){const r=4+Math.random()*16,a=Math.random()*6.28;pa[i]=Math.cos(a)*r;pa[i+1]=(Math.random()-.5)*12;pa[i+2]=Math.sin(a)*r}
+pg.setAttribute('position',new THREE.BufferAttribute(pa,3));const pts=new THREE.Points(pg,new THREE.PointsMaterial({color:0xc9a45c,size:.05,transparent:true,opacity:.7,depthWrite:false}));scene.add(pts);
+let pos=0,target=0;const clamp=v=>Math.max(0,Math.min(N-1,v));
+function layout(){panels.forEach((m,i)=>{const a=(i-pos)*STEP;m.position.set(Math.sin(a)*RAD,Math.sin(i*1.3+performance.now()/1500)*.06,-Math.cos(a)*RAD+RAD);m.rotation.y=-a;const dd=Math.abs(i-pos);m.visible=dd<3.6;const f=Math.max(0,1-dd*.45);m.renderOrder=-Math.round(dd*10);m.material.opacity=.25+.75*f;m.children[0].material.opacity=.15+.6*f})}
+function hud(i){const s=S[i];$('n').textContent=String(i+1).padStart(2,'0')+' / '+N;$('t').textContent=s[1];$('d').textContent=s[2];$('s').innerHTML='Soles'+s[3].map(c=>`<i style="background:${C[c]}"></i>${c}`).join('')}
+let cur=-1;
+// input
+let down=null,moved=0;const el=R.domElement;
+el.addEventListener('pointerdown',e=>{down={x:e.clientX,t:target};moved=0});
+addEventListener('pointermove',e=>{if(!down)return;const dx=e.clientX-down.x;moved=Math.max(moved,Math.abs(dx));target=clamp(down.t-dx/(innerWidth*.28))});
+addEventListener('pointerup',e=>{if(!down)return;down=null;target=Math.round(target);if(moved<6)pick(e)});
+el.addEventListener('wheel',e=>{e.preventDefault();target=clamp(target+(e.deltaY+e.deltaX)*.004);clearTimeout(el._w);el._w=setTimeout(()=>target=Math.round(target),160)},{passive:false});
+addEventListener('keydown',e=>{if(e.key=='ArrowRight')target=clamp(Math.round(target)+1);if(e.key=='ArrowLeft')target=clamp(Math.round(target)-1);if(e.key=='Enter')openD(Math.round(pos));if(e.key=='Escape'){$('detail').classList.remove('on');closeHero()}});
+$('prev').onclick=()=>target=clamp(Math.round(target)-1);$('next').onclick=()=>target=clamp(Math.round(target)+1);
+const ray=new THREE.Raycaster(),v2=new THREE.Vector2();
+function pick(e){v2.set(e.clientX/innerWidth*2-1,-e.clientY/innerHeight*2+1);ray.setFromCamera(v2,cam);const h=ray.intersectObjects(panels,false)[0];if(!h)return;const i=h.object.userData.i;if(i==Math.round(pos))openD(i);else target=i}
+function openD(i){const s=S[i];$('dimg').src='img/'+s[0]+'.webp';$('dt').textContent=s[1];$('dd').textContent=s[2];$('ds').innerHTML='Soles'+s[3].map(c=>`<i style="display:inline-block;width:10px;height:10px;border-radius:50%;margin:0 4px 0 10px;background:${C[c]}"></i>${c}`).join('');$('detail').classList.add('on')}
+$('dclose').onclick=()=>$('detail').classList.remove('on');
+// 3D hero
+let H=null;
+if(!HERO_GLB)$('open3d').style.display='none';
+function setupHero(){const r=new THREE.WebGLRenderer({antialias:true,alpha:true});r.setPixelRatio(Math.min(devicePixelRatio,2));r.setSize(innerWidth,innerHeight);r.outputColorSpace=THREE.SRGBColorSpace;r.toneMapping=THREE.ACESFilmicToneMapping;$('hero').prepend(r.domElement);
+ const sc=new THREE.Scene(),c=new THREE.PerspectiveCamera(35,innerWidth/innerHeight,.01,100);sc.add(new THREE.HemisphereLight(0xfff4e0,0x222222,1.6));const dl=new THREE.DirectionalLight(0xffe2a8,2.4);dl.position.set(2,3,2);sc.add(dl);const rl=new THREE.DirectionalLight(0xc9a45c,1.5);rl.position.set(-3,1,-2);sc.add(rl);
+ const oc=new OrbitControls(c,r.domElement);oc.enableDamping=true;oc.autoRotate=true;oc.autoRotateSpeed=1.4;oc.enablePan=false;
+ H={r,sc,c,oc,mats:{}};
+ new GLTFLoader().load(HERO_GLB,g=>{const o=g.scene;const b=new THREE.Box3().setFromObject(o),sz=b.getSize(new THREE.Vector3()).length(),ce=b.getCenter(new THREE.Vector3());o.position.sub(ce);sc.add(o);
+  const k=innerWidth<innerHeight?2.6:1;c.position.set(sz*.6*k,sz*.35*k,sz*.75*k);oc.minDistance=sz*.35;oc.maxDistance=sz*3;oc.update();
+  o.traverse(m=>{if(m.isMesh){H.mats[m.material.name]=m.material;m.material.roughness=.55}});
+  const combos=[['white','black'],['white','gum'],['white','gold'],['black','white'],['black','gum'],['black','gold']];
+  $('sw').innerHTML='';combos.forEach(([u,s])=>{const b=document.createElement('button');b.style.background=`linear-gradient(${C[u]} 50%,${C[s]} 50%)`;b.title=u+' upper / '+s+' sole';b.onclick=()=>{H.mats.upper_mat?.color.set(C[u]);H.mats.sole_mat?.color.set(C[s])};$('sw').append(b)});
+ },undefined,()=>{$('hero').querySelector('p').textContent='3D MODEL UNAVAILABLE'})}
+function closeHero(){$('hero').classList.remove('on')}
+$('open3d').onclick=()=>{if(!H)setupHero();$('hero').classList.add('on')};$('hclose').onclick=closeHero;
+addEventListener('resize',()=>{cam.aspect=innerWidth/innerHeight;cam.updateProjectionMatrix();R.setSize(innerWidth,innerHeight);if(H){H.c.aspect=cam.aspect;H.c.updateProjectionMatrix();H.r.setSize(innerWidth,innerHeight)}});
+function loop(){requestAnimationFrame(loop);const heroOn=$('hero').classList.contains('on');
+ if(heroOn&&H){H.oc.update();H.r.render(H.sc,H.c);return}
+ pos+=(target-pos)*.09;const i=Math.round(pos);if(i!=cur){cur=i;hud(i)}
+ cam.position.set(0,.2+Math.sin(performance.now()/3000)*.08,innerWidth<700?9.6:5.6);cam.lookAt(0,0,0);pts.rotation.y+=.0006;layout();R.render(scene,cam)}
+loop();
+</script></body></html>
