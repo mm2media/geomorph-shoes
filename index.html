@@ -110,7 +110,7 @@ el.addEventListener('pointerdown',e=>{down={x:e.clientX,t:target};moved=0});
 addEventListener('pointermove',e=>{if(!down)return;const dx=e.clientX-down.x;moved=Math.max(moved,Math.abs(dx));target=clamp(down.t-dx/(innerWidth*.28))});
 addEventListener('pointerup',e=>{if(!down)return;down=null;target=Math.round(target);if(moved<6)pick(e)});
 el.addEventListener('wheel',e=>{e.preventDefault();target=clamp(target+(e.deltaY+e.deltaX)*.004);clearTimeout(el._w);el._w=setTimeout(()=>target=Math.round(target),160)},{passive:false});
-addEventListener('keydown',e=>{if(e.key=='ArrowRight')target=clamp(Math.round(target)+1);if(e.key=='ArrowLeft')target=clamp(Math.round(target)-1);if(e.key=='Enter')openD(Math.round(pos));if(e.key=='Escape'){$('detail').classList.remove('on');closeHero()}});
+addEventListener('keydown',e=>{if(e.key=='ArrowRight')target=clamp(Math.round(target)+1);if(e.key=='ArrowLeft')target=clamp(Math.round(target)-1);if(e.key=='Enter')openD(Math.round(pos));if(e.key=='Escape'){$('detail').classList.remove('on')}});
 $('prev').onclick=()=>target=clamp(Math.round(target)-1);$('next').onclick=()=>target=clamp(Math.round(target)+1);
 const ray=new THREE.Raycaster(),v2=new THREE.Vector2();
 function pick(e){v2.set(e.clientX/innerWidth*2-1,-e.clientY/innerHeight*2+1);ray.setFromCamera(v2,cam);const h=ray.intersectObjects(panels,false)[0];if(!h)return;const i=h.object.userData.i;if(i==Math.round(pos))openD(i);else target=i}
